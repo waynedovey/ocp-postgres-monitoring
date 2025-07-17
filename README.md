@@ -1,4 +1,4 @@
-# Monitoring PostgreSQL on OpenShift with IBM Guardium
+# Comprehensive Guide: Monitoring PostgreSQL on OpenShift with IBM Guardium
 
 ## Overview
 This guide outlines the steps to configure IBM Guardium to monitor database activity and data changes in a PostgreSQL database deployed on OpenShift. We’ll use EDB PostgreSQL as an example, leveraging Guardium’s External S-TAP for Kubernetes to capture database traffic in a containerized environment.
@@ -17,22 +17,22 @@ To begin, you need a running PostgreSQL instance on OpenShift. EDB provides tool
    - Example steps:
      - Install the EDB operator using OpenShift’s OperatorHub or by applying the operator’s YAML manifests.
      - Create a PostgreSQL cluster using a custom resource definition (CRD). For example:
-```yaml
-     apiVersion: postgresql.k8s.enterprisedb.io/v1
-     kind: Cluster
-     metadata:
-       name: edb-postgres
-       namespace: default
-     spec:
-       instances: 1
-       imageName: "containers.enterprisedb.io/postgres/pe:14.5"
-       imagePullSecrets:
-         - name: edb-pull-secret
-       postgresql:
-         parameters:
-           shared_buffers: "256MB"
-       storage:
-         size: 1Gi
+       ```yaml
+       apiVersion: postgres-operator.crunchydata.com/v1beta1
+       kind: PostgresCluster
+       metadata:
+         name: edb-postgres
+         namespace: default
+       spec:
+         image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-14.5-1
+         postgresVersion: 14
+         instances:
+           - name: instance1
+             replicas: 1
+         users:
+           - name: appuser
+             databases:
+               - appdb
        ```
      - Apply this manifest using `oc apply -f <filename>.yaml`.
    - Verify the deployment:
@@ -166,4 +166,4 @@ Ensure Guardium is capturing database activity and data changes as expected.
 
 ---
 
-This guide provides a complete setup to monitor database activity and data changes in EDB PostgreSQL on OpenShift using IBM Guardium. Adjust configurations as needed based on your specific environment.
+This guide provides a complete setup to monitor database activity and data changes in EDB PostgreSQL on OpenShift using IBM Guardium. Adjust configurations as needed based on your specific environment.%
