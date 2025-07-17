@@ -1,4 +1,4 @@
-# Comprehensive Guide: Monitoring PostgreSQL on OpenShift with IBM Guardium
+# Monitoring PostgreSQL on OpenShift with IBM Guardium
 
 ## Overview
 This guide outlines the steps to configure IBM Guardium to monitor database activity and data changes in a PostgreSQL database deployed on OpenShift. We’ll use EDB PostgreSQL as an example, leveraging Guardium’s External S-TAP for Kubernetes to capture database traffic in a containerized environment.
