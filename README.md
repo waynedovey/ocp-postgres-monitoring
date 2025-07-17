@@ -17,22 +17,22 @@ To begin, you need a running PostgreSQL instance on OpenShift. EDB provides tool
    - Example steps:
      - Install the EDB operator using OpenShift’s OperatorHub or by applying the operator’s YAML manifests.
      - Create a PostgreSQL cluster using a custom resource definition (CRD). For example:
-       ```yaml
-       apiVersion: postgres-operator.crunchydata.com/v1beta1
-       kind: PostgresCluster
-       metadata:
-         name: edb-postgres
-         namespace: default
-       spec:
-         image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-14.5-1
-         postgresVersion: 14
-         instances:
-           - name: instance1
-             replicas: 1
-         users:
-           - name: appuser
-             databases:
-               - appdb
+```yaml
+     apiVersion: postgresql.k8s.enterprisedb.io/v1
+     kind: Cluster
+     metadata:
+       name: edb-postgres
+       namespace: default
+     spec:
+       instances: 1
+       imageName: "containers.enterprisedb.io/postgres/pe:14.5"
+       imagePullSecrets:
+         - name: edb-pull-secret
+       postgresql:
+         parameters:
+           shared_buffers: "256MB"
+       storage:
+         size: 1Gi
        ```
      - Apply this manifest using `oc apply -f <filename>.yaml`.
    - Verify the deployment:
